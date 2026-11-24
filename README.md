@@ -55,6 +55,52 @@ If it stops with a FUSE error, install `libfuse2` (Debian/Ubuntu) or `fuse2`
 ./Relay_0.1.0_amd64.AppImage --appimage-extract-and-run
 ```
 
+#### Install the AppImage permanently
+
+An AppImage is a single file, so "installing" means putting it on `PATH` and
+adding a menu entry. Run this once:
+
+```bash
+mkdir -p ~/.local/bin ~/.local/share/applications \
+         ~/.local/share/icons/hicolor/256x256/apps
+
+install -m 755 Relay_0.1.0_amd64.AppImage ~/.local/bin/relay.AppImage
+
+# icon straight out of the image
+cd "$(mktemp -d)" && ~/.local/bin/relay.AppImage --appimage-extract '*.png' >/dev/null
+install -m 644 squashfs-root/Relay.png \
+  ~/.local/share/icons/hicolor/256x256/apps/relay.png
+
+cat > ~/.local/share/applications/relay.desktop <<EOF
+[Desktop Entry]
+Type=Application
+Name=Relay
+Comment=Local-first API client
+Exec=$HOME/.local/bin/relay.AppImage %U
+Icon=relay
+Terminal=false
+Categories=Development;
+StartupWMClass=Relay
+EOF
+
+update-desktop-database ~/.local/share/applications
+```
+
+After that, start it from the application grid (search *Relay*) or type
+`relay.AppImage` in a terminal. To upgrade, download the new release and repeat
+the `install -m 755` line; the menu entry keeps working.
+
+Uninstall:
+
+```bash
+rm ~/.local/bin/relay.AppImage \
+   ~/.local/share/applications/relay.desktop \
+   ~/.local/share/icons/hicolor/256x256/apps/relay.png
+```
+
+`libfuse2` is only needed to *run* it — the extraction step above does not need
+FUSE.
+
 ### Windows x64
 
 1. Run `Relay_<version>_x64-setup.exe`.
