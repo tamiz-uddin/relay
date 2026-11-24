@@ -23,6 +23,26 @@ files, with optional team sync against a self-hosted Relay cloud.
 
 ## Installation
 
+### One command (any Linux, no root)
+
+```bash
+curl -fsSL https://relay.tamiz.pro/install.sh | bash
+```
+
+The script resolves the newest release, downloads the AppImage for your
+architecture, puts it in `~/.local/bin/relay.AppImage`, adds an icon and a menu
+entry, and prints how to start it. Run it again to upgrade.
+
+| Flag | Effect |
+|---|---|
+| `--system` | install into `/usr/local/bin` + `/usr/share` (needs sudo) |
+| `--dir <path>` | install the AppImage somewhere else |
+| `--package` | use the native `.deb`/`.rpm` through sudo instead |
+| `--dry-run` | print every action, change nothing |
+| `--uninstall` | remove the binary, icon and menu entry |
+
+Manual installs are documented below.
+
 ### Debian / Ubuntu
 
 ```bash
